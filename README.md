@@ -1,7 +1,7 @@
 # shell-in-C
 I create a Shell in C from scratch that does most of the things you would need a shell to do.
 
-#Creating a shell in C
+# Creating a shell in C
 
 A shell needs to do 3 things in loop:
 
@@ -11,7 +11,7 @@ A shell needs to do 3 things in loop:
 
 ---
 
-###READING A LINE
+### READING A LINE
 There are 2 different ways of doing so: with a [getline()]("https://c-for-dummies.com/blog/?p=1112") (newer and easier approach) or with the getchar() with implies allocating memory dinamically so that when you exceed it, you don't stop
 
 **getchat() approach**:
@@ -31,7 +31,7 @@ There are 2 different ways of doing so: with a [getline()]("https://c-for-dummie
   - stdin
 - check [getline()]("https://c-for-dummies.com/blog/?p=1112") return, and check if it was becasue of EOF or unknown
 
-###SPLITTING THE LINE
+### SPLITTING THE LINE
 
 I’m going to make a glaring simplification here, and say that we won’t allow quoting or backslash escaping in our command line arguments. Instead, we will simply use whitespace to separate arguments from each other. So the command echo "this message" would not call echo with a single argument this message, but rather it would call echo with two arguments: "this **and** message".
 
@@ -43,11 +43,11 @@ Let's get started:
 - get the token using the library continuosly until we get them all, and add each one in an array
 - check if the buffer exceeded
 
-###RUNNING OUR PROGRAMS
+### RUNNING OUR PROGRAMS
 
 ---
 
-#####How processes work in unix
+##### How processes work in unix
 Now, we’re really at the heart of what a shell does. Starting processes is the main function of shells. So writing a shell means that you need to know exactly what’s going on with processes and how they start. That’s why I’m going to take us on a short diversion to discuss processes in Unix-like operating systems.
 
 There are only two ways of starting processes on Unix. The first one (which almost doesn’t count) is by being Init. You see, when a Unix computer boots, its kernel is loaded. Once it is loaded and initialized, the kernel starts only one process, which is called Init. This process runs for the entire length of time that the computer is on, and it manages loading up the rest of the processes that you need for your computer to be useful.
@@ -60,7 +60,7 @@ With these two system calls, we have the building blocks for how most programs a
 
 ---
 
-#####What to code:
+##### What to code:
 
 - we first need to [fork()]("https://www.geeksforgeeks.org/fork-system-call/")
 - we need to then execute, with [execvp()]("https://www.digitalocean.com/community/tutorials/execvp-function-c-plus-plus") (or any other exec tbh, choice up to you)
@@ -68,7 +68,7 @@ With these two system calls, we have the building blocks for how most programs a
 - we need to check if the process returns -1, and deal with the error
 - finally we can run the program. we use [waitpid()]("https://www.ibm.com/docs/en/zos/2.3.0?topic=functions-waitpid-wait-specific-child-process-end") to wait for the process’s state to change. Unfortunately, waitpid() has a lot of options (like exec()). Processes can change state in lots of ways, and not all of them mean that the process has ended. A process can either exit (normally, or with an error code), or it can be killed by a signal. So, we use the macros provided with waitpid() to wait until either the processes are exited or killed. Then, the function finally returns a 1, as a signal to the calling function that we should prompt for input again.
 
-###CREATE BUILT IN COMMANDS
+### CREATE BUILT IN COMMANDS
 Most commands a shell executes are programs, but not all of them. Some of them are built right into the shell. So, it makes sense that we need to add some commands to the shell itself. The ones I added to my shell are _cd_, _exit_, and _help_
 So let's start:
 
@@ -91,5 +91,5 @@ int (*builtin_func[]) (char **) = {
 - exit function:
   - returns 0 (what did you expect?)
 
-###FINALLY EXECUTE
+### FINALLY EXECUTE
 what's now left to do is simply chose between the functions based on what the first argument is
